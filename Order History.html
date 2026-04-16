@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>היסטוריית הזמנות - SAP Service</title>
+    <title>היסטוריית הזמנות - SAP B2B</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
@@ -16,19 +16,29 @@
             --border: #e2e8f0;
             --status-open: #f39c12;
             --status-closed: #107c10;
-            --status-cancelled: #d93025;
         }
 
-        body {
-            margin: 0;
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--sap-light);
-            padding: 40px 5%;
+        body { margin: 0; font-family: 'Assistant', sans-serif; background-color: var(--sap-light); }
+
+        /* שורת ניווט */
+        .sap-nav {
+            background: var(--sap-blue);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .nav-logo { font-weight: bold; font-size: 18px; }
 
         .history-container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 40px auto;
             background: var(--white);
             padding: 30px;
             border-radius: 12px;
@@ -39,172 +49,104 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 2px solid var(--sap-light);
             padding-bottom: 15px;
         }
 
-        .header-section h2 { color: var(--sap-blue); margin: 0; }
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .history-table th { text-align: right; padding: 15px; background: #f8f9fa; color: #718096; border-bottom: 2px solid var(--border); }
+        .history-table td { padding: 15px; border-bottom: 1px solid var(--border); }
 
-        /* פילטרים מהירים */
-        .history-filters {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .filter-btn {
-            padding: 8px 18px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .filter-btn.active {
-            background: var(--sap-blue);
-            color: white;
-            border-color: var(--sap-blue);
-        }
-
-        /* טבלת הזמנות */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .history-table th {
-            text-align: right;
-            padding: 15px;
-            background: #f8f9fa;
-            color: #718096;
-            font-size: 14px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        .history-table td {
-            padding: 15px;
-            border-bottom: 1px solid var(--border);
-            font-size: 15px;
-        }
-
-        .history-table tr:hover { background: #fcfcfc; }
-
-        /* סטטוסים - Badge Style */
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
+        .status-badge { padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; }
         .status-open { background: #fff4e5; color: var(--status-open); }
         .status-closed { background: #e6ffed; color: var(--status-closed); }
-        .status-cancelled { background: #ffeef0; color: var(--status-cancelled); }
 
-        .view-details {
-            color: var(--sap-blue);
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .view-details:hover { text-decoration: underline; }
-
-        /* חיפוש מהיר */
-        .search-box {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 40px 12px 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a0aec0;
-        }
+        .loading-msg { text-align: center; padding: 40px; color: var(--sap-blue); }
     </style>
 </head>
 <body>
 
+    <nav class="sap-nav">
+        <div class="nav-logo">SAP Business Portal</div>
+        <ul class="nav-links">
+            <li><a href="Product Catalog.html">קטלוג</a></li>
+            <li><a href="Quick Order.html">הזמנה מהירה</a></li>
+            <li><a href="Cart.html">סל קניות</a></li>
+            <li><a href="Order History.html" style="border-bottom: 2px solid white;">היסטוריה</a></li>
+            <li><a href="Account Info.html">מצב חשבון</a></li>
+            <li><a href="login.html" style="color: #ffb3b3;">יציאה</a></li>
+        </ul>
+    </nav>
+
     <div class="history-container">
         <div class="header-section">
-            <h2><i class="fas fa-history"></i> היסטוריית הזמנות מהסאפ</h2>
-            <div class="stats" style="font-size: 14px; color: #718096;">
-                מציג 3 הזמנות אחרונות
-            </div>
+            <h2><i class="fas fa-history"></i> היסטוריית הזמנות</h2>
+            <div id="orderCount" style="font-size: 14px; color: #718096;">טוען נתונים...</div>
         </div>
 
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="חיפוש לפי מספר הזמנה או תאריך...">
+        <div id="loading" class="loading-msg">
+            <i class="fas fa-spinner fa-spin"></i> מושך הזמנות משרת ה-SAP...
         </div>
 
-        <div class="history-filters">
-            <button class="filter-btn active">הכל</button>
-            <button class="filter-btn">פתוחות</button>
-            <button class="filter-btn">סגורות</button>
-            <button class="filter-btn">מבוטלות</button>
-        </div>
-
-        <table class="history-table">
+        <table class="history-table" id="ordersTable" style="display: none;">
             <thead>
                 <tr>
-                    <th>מספר הזמנה (DocNum)</th>
+                    <th>מספר הזמנה</th>
                     <th>תאריך</th>
-                    <th>סטטוס בסאפ</th>
-                    <th>סה״כ (כולל מע״מ)</th>
+                    <th>סטטוס</th>
+                    <th>סה"כ (₪)</th>
                     <th>פעולות</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><b>100254</b></td>
-                    <td>14/03/2026</td>
-                    <td><span class="status-badge status-closed">סופקה (Closed)</span></td>
-                    <td>₪1,450.00</td>
-                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><b>100268</b></td>
-                    <td>28/03/2026</td>
-                    <td><span class="status-badge status-open">בטיפול (Open)</span></td>
-                    <td>₪4,200.00</td>
-                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><b>100210</b></td>
-                    <td>01/03/2026</td>
-                    <td><span class="status-badge status-cancelled">בוטלה</span></td>
-                    <td>₪850.00</td>
-                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
-                </tr>
-            </tbody>
+            <tbody id="ordersBody">
+                </tbody>
         </table>
     </div>
 
     <script>
-        // לוגיקה למעבר בין פילטרים
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                // כאן תבוא קריאת API עם פילטר מתאים (למשל DocumentStatus eq 'bOpen')
-            });
-        });
+        async function loadOrders() {
+            const cardCode = sessionStorage.getItem('loggedClientCode') || 'C1000';
+            const PROXY_URL = `https://your-proxy.onrender.com/api/orders/${cardCode}`;
+
+            try {
+                const response = await fetch(PROXY_URL);
+                const orders = await response.json();
+
+                const body = document.getElementById('ordersBody');
+                body.innerHTML = '';
+
+                orders.forEach(order => {
+                    const statusClass = order.DocumentStatus === 'bO' ? 'status-open' : 'status-closed';
+                    const statusText = order.DocumentStatus === 'bO' ? 'בטיפול (Open)' : 'סגור/סופק (Closed)';
+                    
+                    body.innerHTML += `
+                        <tr>
+                            <td><b>${order.DocNum}</b></td>
+                            <td>${new Date(order.DocDate).toLocaleDateString('he-IL')}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                            <td>₪${order.DocTotal.toLocaleString()}</td>
+                            <td><button onclick="viewOrder(${order.DocEntry})" style="border:none; background:none; color:#0054a6; cursor:pointer; font-weight:bold;">פרטים</button></td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('ordersTable').style.display = 'table';
+                document.getElementById('orderCount').innerText = `מציג ${orders.length} הזמנות אחרונות`;
+
+            } catch (error) {
+                document.getElementById('loading').innerText = 'שגיאה בטעינת נתונים';
+                console.error(error);
+            }
+        }
+
+        function viewOrder(docEntry) {
+            // כאן אפשר להוסיף פופ-אפ שמציג את השורות של ההזמנה הספציפית
+            alert("מציג פרטים עבור הזמנה פנימית: " + docEntry);
+        }
+
+        window.onload = loadOrders;
     </script>
 </body>
 </html>
