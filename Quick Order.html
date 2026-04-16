@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הזמנה מהירה - למקצוענים</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sap-blue: #0054a6;
+            --sap-light: #f4f7fa;
+            --white: #ffffff;
+            --border: #d1d5db;
+            --row-hover: #f9fafb;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--sap-light);
+            padding: 40px 5%;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--sap-blue);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: var(--sap-blue);
+            font-size: 26px;
+        }
+
+        .instruction {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        /* Table Style */
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .order-table th {
+            text-align: right;
+            padding: 12px;
+            background: #f8f9fa;
+            border-bottom: 2px solid var(--border);
+            color: var(--sap-blue);
+        }
+
+        .order-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-table tr:hover {
+            background-color: var(--row-hover);
+        }
+
+        /* Inputs */
+        .input-item-code {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 16px;
+        }
+
+        .input-qty {
+            width: 80px;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .item-name-cell {
+            color: #555;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-add-row {
+            background: #e5e7eb;
+            color: #374151;
+            margin-bottom: 20px;
+        }
+
+        .btn-add-row:hover { background: #d1d5db; }
+
+        .btn-submit {
+            background: var(--sap-blue);
+            color: white;
+            font-size: 18px;
+            float: left;
+        }
+
+        .btn-submit:hover { opacity: 0.9; }
+
+        .remove-btn {
+            color: #d93025;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .total-summary {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bolt"></i> הזמנה מהירה</h1>
+            <span style="font-weight: bold; color: var(--sap-blue);">מחירון: לקוח קבוע</span>
+        </div>
+
+        <p class="instruction">הכנס מק״ט וכמות. המערכת תזהה את שם הפריט באופן אוטומטי מהסאפ.</p>
+
+        <table class="order-table" id="quickOrderTable">
+            <thead>
+                <tr>
+                    <th>מק״ט (Item Code)</th>
+                    <th>שם פריט</th>
+                    <th>כמות</th>
+                    <th>מחיר יחידה</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr>
+                    <td><input type="text" class="input-item-code" placeholder="למשל: A100-202" onchange="lookupItem(this)"></td>
+                    <td class="item-name-cell">---</td>
+                    <td><input type="number" class="input-qty" value="1" min="1"></td>
+                    <td>₪0.00</td>
+                    <td><i class="fas fa-times-circle remove-btn" onclick="removeRow(this)"></i></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="btn btn-add-row" onclick="addRow()">
+            <i class="fas fa-plus"></i> הוסף שורה חדשה
+        </button>
+
+        <div class="total-summary">
+            <span style="font-size: 14px;">סה״כ שורות: <span id="rowCount">1</span></span>
+            <button class="btn btn-submit" onclick="submitToCart()">הוסף את כל הפריטים לסל</button>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+
+    <script>
+        // פונקציה להוספת שורה חדשה בטבלה
+        function addRow() {
+            const tbody = document.getElementById('tableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="input-item-code" placeholder="הכנס מק״ט..." onchange="lookupItem(this)"></td>
+                <td class="item-name-cell">---</td>
+                <td><input type="number" class="input-qty" value="1" min="1"></td>
+                <td>₪0.00</td>
+                <td><i class="fas fa-times-circle remove-btn" onclick="removeRow(this)"></i></td>
+            `;
+            tbody.appendChild(newRow);
+            updateCount();
+        }
+
+        // פונקציה להסרת שורה
+        function removeRow(btn) {
+            const row = btn.parentNode.parentNode;
+            if (document.querySelectorAll('#tableBody tr').length > 1) {
+                row.remove();
+                updateCount();
+            }
+        }
+
+        // עדכון מונה השורות
+        function updateCount() {
+            const count = document.querySelectorAll('#tableBody tr').length;
+            document.getElementById('rowCount').innerText = count;
+        }
+
+        // סימולציה של זיהוי פריט מהסאפ (כאן תבוא קריאת ה-API שלך)
+        function lookupItem(input) {
+            const row = input.parentNode.parentNode;
+            const nameCell = row.querySelector('.item-name-cell');
+            
+            if (input.value.length > 2) {
+                nameCell.innerText = "טוען נתונים...";
+                nameCell.style.color = "#0054a6";
+                
+                // כאן תבצע fetch לסאפ לפי ה-ItemCode
+                setTimeout(() => {
+                    // דוגמה לתוצאה שתחזור
+                    nameCell.innerText = "מוצר מזוהה: " + input.value.toUpperCase();
+                    nameCell.style.color = "#107c10";
+                }, 800);
+            }
+        }
+
+        function submitToCart() {
+            alert("כל הפריטים התקינים מועברים כעת לסל הקניות!");
+            // לוגיקה לאיסוף כל הנתונים מהטבלה ושליחתם ל-State של הסל
+        }
+    </script>
+</body>
+</html>
