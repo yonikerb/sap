@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הזמנה מהירה - למקצוענים</title>
+    <title>הזמנה מהירה - SAP B2B</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
@@ -17,16 +17,26 @@
             --row-hover: #f9fafb;
         }
 
-        body {
-            margin: 0;
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--sap-light);
-            padding: 40px 5%;
+        body { margin: 0; font-family: 'Assistant', sans-serif; background-color: var(--sap-light); }
+
+        /* שורת ניווט */
+        .sap-nav {
+            background: var(--sap-blue);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { color: white; text-decoration: none; font-weight: bold; font-size: 14px; }
 
         .container {
             max-width: 1000px;
-            margin: 0 auto;
+            margin: 40px auto;
             background: var(--white);
             padding: 30px;
             border-radius: 12px;
@@ -37,123 +47,44 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 2px solid var(--sap-blue);
             padding-bottom: 15px;
         }
 
-        .header h1 {
-            margin: 0;
-            color: var(--sap-blue);
-            font-size: 26px;
-        }
+        .order-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .order-table th { text-align: right; padding: 12px; background: #f8f9fa; border-bottom: 2px solid var(--border); color: var(--sap-blue); }
+        .order-table td { padding: 10px; border-bottom: 1px solid #eee; }
 
-        .instruction {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
+        .input-item-code { width: 90%; padding: 10px; border: 1px solid var(--border); border-radius: 5px; font-family: monospace; }
+        .input-qty { width: 70px; padding: 10px; border: 1px solid var(--border); border-radius: 5px; text-align: center; }
 
-        /* Table Style */
-        .order-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .order-table th {
-            text-align: right;
-            padding: 12px;
-            background: #f8f9fa;
-            border-bottom: 2px solid var(--border);
-            color: var(--sap-blue);
-        }
-
-        .order-table td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .order-table tr:hover {
-            background-color: var(--row-hover);
-        }
-
-        /* Inputs */
-        .input-item-code {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 16px;
-        }
-
-        .input-qty {
-            width: 80px;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .item-name-cell {
-            color: #555;
-            font-weight: bold;
-            width: 40%;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
-        }
-
-        .btn-add-row {
-            background: #e5e7eb;
-            color: #374151;
-            margin-bottom: 20px;
-        }
-
-        .btn-add-row:hover { background: #d1d5db; }
-
-        .btn-submit {
-            background: var(--sap-blue);
-            color: white;
-            font-size: 18px;
-            float: left;
-        }
-
-        .btn-submit:hover { opacity: 0.9; }
-
-        .remove-btn {
-            color: #d93025;
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .total-summary {
-            background: #f1f5f9;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: left;
-            margin-top: 20px;
-        }
+        .btn { padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-add-row { background: #e5e7eb; color: #374151; margin-bottom: 20px; }
+        .btn-submit { background: var(--sap-blue); color: white; float: left; }
+        .remove-btn { color: #d93025; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <nav class="sap-nav">
+        <div class="nav-logo" style="font-weight: bold;">SAP Business Portal</div>
+        <ul class="nav-links">
+            <li><a href="Product Catalog.html">קטלוג</a></li>
+            <li><a href="Quick Order.html" style="border-bottom: 2px solid white;">הזמנה מהירה</a></li>
+            <li><a href="Cart.html">סל קניות</a></li>
+            <li><a href="Order History.html">היסטוריה</a></li>
+            <li><a href="login.html" style="color: #ffb3b3;">יציאה</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
         <div class="header">
             <h1><i class="fas fa-bolt"></i> הזמנה מהירה</h1>
-            <span style="font-weight: bold; color: var(--sap-blue);">מחירון: לקוח קבוע</span>
+            <span id="clientLabel" style="font-weight: bold; color: var(--sap-blue);">טוען נתוני לקוח...</span>
         </div>
 
-        <p class="instruction">הכנס מק״ט וכמות. המערכת תזהה את שם הפריט באופן אוטומטי מהסאפ.</p>
+        <p style="color: #666;">הזן מק"ט וכמות. המערכת תבצע אימות מול מלאי ה-SAP בזמן אמת.</p>
 
         <table class="order-table" id="quickOrderTable">
             <thead>
@@ -161,85 +92,109 @@
                     <th>מק״ט (Item Code)</th>
                     <th>שם פריט</th>
                     <th>כמות</th>
-                    <th>מחיר יחידה</th>
+                    <th>מחיר</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <tr>
-                    <td><input type="text" class="input-item-code" placeholder="למשל: A100-202" onchange="lookupItem(this)"></td>
-                    <td class="item-name-cell">---</td>
-                    <td><input type="number" class="input-qty" value="1" min="1"></td>
-                    <td>₪0.00</td>
-                    <td><i class="fas fa-times-circle remove-btn" onclick="removeRow(this)"></i></td>
-                </tr>
-            </tbody>
+                </tbody>
         </table>
 
         <button class="btn btn-add-row" onclick="addRow()">
-            <i class="fas fa-plus"></i> הוסף שורה חדשה
+            <i class="fas fa-plus"></i> הוסף שורה
         </button>
 
-        <div class="total-summary">
-            <span style="font-size: 14px;">סה״כ שורות: <span id="rowCount">1</span></span>
-            <button class="btn btn-submit" onclick="submitToCart()">הוסף את כל הפריטים לסל</button>
+        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+            <button class="btn btn-submit" onclick="addAllToCart()">
+                הוסף הכל לסל הקניות <i class="fas fa-shopping-cart"></i>
+            </button>
             <div style="clear:both;"></div>
         </div>
     </div>
 
     <script>
-        // פונקציה להוספת שורה חדשה בטבלה
+        const PROXY_URL = "https://your-proxy.onrender.com/api";
+
         function addRow() {
             const tbody = document.getElementById('tableBody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" class="input-item-code" placeholder="הכנס מק״ט..." onchange="lookupItem(this)"></td>
-                <td class="item-name-cell">---</td>
+            const tr = document.createElement('tr');
+            tr.className = "order-row";
+            tr.innerHTML = `
+                <td><input type="text" class="input-item-code" placeholder="מק״ט..." onblur="lookupItem(this)"></td>
+                <td class="item-name">---</td>
                 <td><input type="number" class="input-qty" value="1" min="1"></td>
-                <td>₪0.00</td>
-                <td><i class="fas fa-times-circle remove-btn" onclick="removeRow(this)"></i></td>
+                <td class="item-price">₪0.00</td>
+                <td><i class="fas fa-trash remove-btn" onclick="this.closest('tr').remove()"></i></td>
             `;
-            tbody.appendChild(newRow);
-            updateCount();
+            tbody.appendChild(tr);
         }
 
-        // פונקציה להסרת שורה
-        function removeRow(btn) {
-            const row = btn.parentNode.parentNode;
-            if (document.querySelectorAll('#tableBody tr').length > 1) {
-                row.remove();
-                updateCount();
-            }
-        }
+        async function lookupItem(input) {
+            const itemCode = input.value.trim();
+            if (!itemCode) return;
 
-        // עדכון מונה השורות
-        function updateCount() {
-            const count = document.querySelectorAll('#tableBody tr').length;
-            document.getElementById('rowCount').innerText = count;
-        }
+            const row = input.closest('tr');
+            const nameCell = row.querySelector('.item-name');
+            const priceCell = row.querySelector('.item-price');
 
-        // סימולציה של זיהוי פריט מהסאפ (כאן תבוא קריאת ה-API שלך)
-        function lookupItem(input) {
-            const row = input.parentNode.parentNode;
-            const nameCell = row.querySelector('.item-name-cell');
-            
-            if (input.value.length > 2) {
-                nameCell.innerText = "טוען נתונים...";
-                nameCell.style.color = "#0054a6";
+            nameCell.innerText = "מחפש...";
+
+            try {
+                // קריאה לפרוקסי שמחזיר נתוני פריט בודד
+                const response = await fetch(`${PROXY_URL}/products/${itemCode}`);
+                if (!response.ok) throw new Error();
                 
-                // כאן תבצע fetch לסאפ לפי ה-ItemCode
-                setTimeout(() => {
-                    // דוגמה לתוצאה שתחזור
-                    nameCell.innerText = "מוצר מזוהה: " + input.value.toUpperCase();
-                    nameCell.style.color = "#107c10";
-                }, 800);
+                const item = await response.json();
+                nameCell.innerText = item.ItemName;
+                nameCell.style.color = "#107c10";
+                priceCell.innerText = "₪" + parseFloat(item.Price).toLocaleString();
+                
+                // שמירת נתונים ב-Dataset של השורה לצורך הוספה לסל
+                row.dataset.itemData = JSON.stringify({
+                    code: item.ItemCode,
+                    name: item.ItemName,
+                    price: item.Price
+                });
+            } catch (e) {
+                nameCell.innerText = "לא נמצא בסאפ";
+                nameCell.style.color = "red";
             }
         }
 
-        function submitToCart() {
-            alert("כל הפריטים התקינים מועברים כעת לסל הקניות!");
-            // לוגיקה לאיסוף כל הנתונים מהטבלה ושליחתם ל-State של הסל
+        function addAllToCart() {
+            let cart = JSON.parse(localStorage.getItem('sap_cart')) || [];
+            const rows = document.querySelectorAll('.order-row');
+            let addedCount = 0;
+
+            rows.forEach(row => {
+                if (row.dataset.itemData) {
+                    const item = JSON.parse(row.dataset.itemData);
+                    const qty = parseInt(row.querySelector('.input-qty').value);
+                    
+                    const existing = cart.find(c => c.code === item.code);
+                    if (existing) {
+                        existing.qty += qty;
+                    } else {
+                        cart.push({ ...item, qty });
+                    }
+                    addedCount++;
+                }
+            });
+
+            if (addedCount > 0) {
+                localStorage.setItem('sap_cart', JSON.stringify(cart));
+                alert(`${addedCount} פריטים נוספו לסל בהצלחה!`);
+                window.location.href = "Cart.html";
+            } else {
+                alert("אנא הזן מק״טים תקינים לפני ההוספה.");
+            }
         }
+
+        window.onload = () => {
+            const user = sessionStorage.getItem('loggedClientName') || "לקוח כללי";
+            document.getElementById('clientLabel').innerText = "מחובר בתור: " + user;
+            addRow(); // התחל עם שורה אחת ריקה
+        };
     </script>
 </body>
 </html>
