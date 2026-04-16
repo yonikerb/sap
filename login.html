@@ -15,39 +15,17 @@
             --sap-light: #f4f7fa;
             --white: #ffffff;
             --error: #d93025;
-            --success: #107c10;
         }
 
         body {
             margin: 0;
             font-family: 'Assistant', sans-serif;
-            background-color: var(--sap-light);
-            color: #333;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* ניהול שכבות הדפים */
-        .view {
-            display: none;
-            height: 100vh;
-            width: 100%;
-            overflow-y: auto;
-        }
-
-        .view.active {
-            display: block;
-        }
-
-        /* --- עיצוב דף כניסה (Login) --- */
-        #loginPage {
             background: linear-gradient(135deg, var(--sap-blue) 0%, var(--sap-dark) 100%);
-            display: none;
+            height: 100vh;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
-
-        #loginPage.active { display: flex; }
 
         .login-card {
             background: var(--white);
@@ -59,39 +37,15 @@
             text-align: center;
         }
 
-        .login-header i {
-            font-size: 4rem;
-            color: var(--sap-blue);
-            margin-bottom: 15px;
-        }
-
+        .login-header i { font-size: 4rem; color: var(--sap-blue); margin-bottom: 15px; }
         .login-header h1 { margin: 0; color: var(--sap-dark); font-size: 28px; }
         .login-header p { color: #666; margin-bottom: 35px; }
 
-        .input-wrapper {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .input-wrapper label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: var(--sap-dark);
-        }
-
-        .input-field {
-            position: relative;
-        }
-
-        .input-field i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--sap-blue);
-        }
-
+        .input-wrapper { text-align: right; margin-bottom: 20px; }
+        .input-wrapper label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--sap-dark); }
+        
+        .input-field { position: relative; }
+        .input-field i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--sap-blue); }
         .input-field input {
             width: 100%;
             padding: 14px 45px 14px 15px;
@@ -99,14 +53,9 @@
             border-radius: 8px;
             font-size: 16px;
             box-sizing: border-box;
-            transition: all 0.3s;
+            transition: 0.3s;
         }
-
-        .input-field input:focus {
-            border-color: var(--sap-blue);
-            outline: none;
-            box-shadow: 0 0 8px rgba(0,84,166,0.1);
-        }
+        .input-field input:focus { border-color: var(--sap-blue); outline: none; }
 
         .login-btn {
             width: 100%;
@@ -119,45 +68,6 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 10px;
-            transition: background 0.3s;
-        }
-
-        .login-btn:hover { background-color: var(--sap-dark); }
-
-        /* --- עיצוב קטלוג מוצרים --- */
-        .catalog-header {
-            background: var(--white);
-            height: 70px;
-            padding: 0 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .catalog-content {
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 100px 20px;
-            color: #999;
-        }
-
-        .empty-state i { font-size: 5rem; margin-bottom: 20px; opacity: 0.3; }
-
-        .logout-link {
-            color: var(--error);
-            cursor: pointer;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 14px;
         }
 
         .error-msg {
@@ -173,113 +83,87 @@
 </head>
 <body>
 
-    <section id="loginPage" class="view active">
-        <div class="login-card">
-            <div class="login-header">
-                <i class="fas fa-shield-halved"></i>
-                <h1>השומר</h1>
-                <p>מערכת ניהול הזמנות B2B</p>
-            </div>
-
-            <div id="loginError" class="error-msg">פרטי התחברות שגויים, נסה שנית.</div>
-
-            <form id="loginForm">
-                <div class="input-wrapper">
-                    <label>קוד לקוח בסאפ</label>
-                    <div class="input-field">
-                        <i class="fas fa-user-tag"></i>
-                        <input type="text" id="bpCode" placeholder="למשל: C10000" required>
-                    </div>
-                </div>
-
-                <div class="input-wrapper">
-                    <label>סיסמה</label>
-                    <div class="input-field">
-                        <i class="fas fa-key"></i>
-                        <input type="password" id="password" placeholder="הכנס סיסמה" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="login-btn" id="loginBtn">כניסה למערכת</button>
-            </form>
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fas fa-shield-halved"></i>
+            <h1>השומר</h1>
+            <p>פורטל הזמנות SAP Business One</p>
         </div>
-    </section>
 
-    <section id="catalogPage" class="view">
-        <header class="catalog-header">
-            <div class="brand">
-                <strong style="color: var(--sap-blue); font-size: 20px;">Product Catalog</strong>
-            </div>
-            
-            <div class="user-controls">
-                <span id="userNameDisplay" style="margin-left: 15px; font-weight: 700;"></span>
-                <a onclick="logout()" class="logout-link">התנתקות</a>
-            </div>
-        </header>
+        <div id="loginError" class="error-msg"></div>
 
-        <main class="catalog-content">
-            <div id="catalogArea">
-                <div class="empty-state">
-                    <i class="fas fa-box-open"></i>
-                    <h2>הקטלוג מוכן לטעינה</h2>
-                    <p>כאן יוצגו המוצרים שלך לאחר חיבור ל-SAP Service Layer.</p>
+        <form id="loginForm">
+            <div class="input-wrapper">
+                <label>מזהה לקוח (CardCode)</label>
+                <div class="input-field">
+                    <i class="fas fa-user-tag"></i>
+                    <input type="text" id="bpCode" placeholder="למשל: C1000" required>
                 </div>
             </div>
-        </main>
-    </section>
+
+            <div class="input-wrapper">
+                <label>סיסמה</label>
+                <div class="input-field">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="password" placeholder="הכנס סיסמה" required>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">כניסה למערכת</button>
+        </form>
+    </div>
 
     <script>
-        // מפתח ה-API שלך לשימוש עתידי בקריאות FETCH
-        const SAP_API_KEY = "jtEsMyMSIAhAOPjf6Wac2GE3RokREAG1";
+        const PROXY_URL = "https://your-proxy.onrender.com/api"; // כתובת השרת שלך
 
-        const loginForm = document.getElementById('loginForm');
-        const loginError = document.getElementById('loginError');
-
-        // פונקציית מעבר בין דפים
-        function showPage(pageId) {
-            document.querySelectorAll('.view').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        // ניהול תהליך ההתחברות
-        loginForm.addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const bpCode = document.getElementById('bpCode').value;
+            const bpCode = document.getElementById('bpCode').value.trim();
             const password = document.getElementById('password').value;
             const btn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('loginError');
 
-            // אפקט טעינה
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> מאמת...';
-            btn.style.opacity = '0.7';
+            // איפוס שגיאות ואפקט טעינה
+            errorDiv.style.display = 'none';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> מאמת מול סאפ...';
+            btn.disabled = true;
 
-            /* כאן תתבצע הקריאה האמיתית שלך לסאפ. 
-               בינתיים, אנחנו מדמים אימות מוצלח ומעבירים לקטלוג.
-            */
-            
-            setTimeout(() => {
-                // בדיקת דמו פשוטה
-                if(bpCode && password) {
-                    document.getElementById('userNameDisplay').innerText = "לקוח: " + bpCode;
-                    showPage('catalogPage');
+            try {
+                // שליחת בקשת Login לשרת הפרוקסי
+                const response = await fetch(`${PROXY_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bpCode, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // שמירת פרטי המשתמש וטוקן ה-Session
+                    sessionStorage.setItem('sap_session', data.SessionId);
+                    sessionStorage.setItem('loggedCardCode', bpCode);
+                    sessionStorage.setItem('loggedCardName', data.CardName);
+                    
+                    // מעבר לקטלוג
+                    window.location.href = "Product Catalog.html";
                 } else {
-                    loginError.style.display = 'block';
-                    btn.innerHTML = 'כניסה למערכת';
-                    btn.style.opacity = '1';
+                    throw new Error(data.message || 'פרטי התחברות שגויים');
                 }
-            }, 1200);
+            } catch (error) {
+                errorDiv.innerText = error.message;
+                errorDiv.style.display = 'block';
+                btn.innerHTML = 'כניסה למערכת';
+                btn.disabled = false;
+            }
         });
 
-        // התנתקות
-        function logout() {
-            if(confirm("האם אתה בטוח שברצונך להתנתק?")) {
-                showPage('loginPage');
-                loginForm.reset();
-                loginError.style.display = 'none';
-                document.getElementById('loginBtn').innerHTML = 'כניסה למערכת';
-                document.getElementById('loginBtn').style.opacity = '1';
+        // בדיקה אם המשתמש כבר מחובר
+        window.onload = () => {
+            if (sessionStorage.getItem('sap_session')) {
+                window.location.href = "Product Catalog.html";
             }
-        }
+        };
     </script>
 </body>
 </html>
