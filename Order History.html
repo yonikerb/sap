@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>היסטוריית הזמנות - SAP Service</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --sap-blue: #0054a6;
+            --sap-light: #f4f7fa;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --status-open: #f39c12;
+            --status-closed: #107c10;
+            --status-cancelled: #d93025;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--sap-light);
+            padding: 40px 5%;
+        }
+
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--sap-light);
+            padding-bottom: 15px;
+        }
+
+        .header-section h2 { color: var(--sap-blue); margin: 0; }
+
+        /* פילטרים מהירים */
+        .history-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--sap-blue);
+            color: white;
+            border-color: var(--sap-blue);
+        }
+
+        /* טבלת הזמנות */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            text-align: right;
+            padding: 15px;
+            background: #f8f9fa;
+            color: #718096;
+            font-size: 14px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .history-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+        }
+
+        .history-table tr:hover { background: #fcfcfc; }
+
+        /* סטטוסים - Badge Style */
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status-open { background: #fff4e5; color: var(--status-open); }
+        .status-closed { background: #e6ffed; color: var(--status-closed); }
+        .status-cancelled { background: #ffeef0; color: var(--status-cancelled); }
+
+        .view-details {
+            color: var(--sap-blue);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .view-details:hover { text-decoration: underline; }
+
+        /* חיפוש מהיר */
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="history-container">
+        <div class="header-section">
+            <h2><i class="fas fa-history"></i> היסטוריית הזמנות מהסאפ</h2>
+            <div class="stats" style="font-size: 14px; color: #718096;">
+                מציג 3 הזמנות אחרונות
+            </div>
+        </div>
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="חיפוש לפי מספר הזמנה או תאריך...">
+        </div>
+
+        <div class="history-filters">
+            <button class="filter-btn active">הכל</button>
+            <button class="filter-btn">פתוחות</button>
+            <button class="filter-btn">סגורות</button>
+            <button class="filter-btn">מבוטלות</button>
+        </div>
+
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>מספר הזמנה (DocNum)</th>
+                    <th>תאריך</th>
+                    <th>סטטוס בסאפ</th>
+                    <th>סה״כ (כולל מע״מ)</th>
+                    <th>פעולות</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>100254</b></td>
+                    <td>14/03/2026</td>
+                    <td><span class="status-badge status-closed">סופקה (Closed)</span></td>
+                    <td>₪1,450.00</td>
+                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
+                </tr>
+                <tr>
+                    <td><b>100268</b></td>
+                    <td>28/03/2026</td>
+                    <td><span class="status-badge status-open">בטיפול (Open)</span></td>
+                    <td>₪4,200.00</td>
+                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
+                </tr>
+                <tr>
+                    <td><b>100210</b></td>
+                    <td>01/03/2026</td>
+                    <td><span class="status-badge status-cancelled">בוטלה</span></td>
+                    <td>₪850.00</td>
+                    <td><a href="#" class="view-details">צפה בפרטים <i class="fas fa-external-link-alt"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // לוגיקה למעבר בין פילטרים
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // כאן תבוא קריאת API עם פילטר מתאים (למשל DocumentStatus eq 'bOpen')
+            });
+        });
+    </script>
+</body>
+</html>
